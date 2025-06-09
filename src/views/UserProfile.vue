@@ -88,13 +88,22 @@ const goals = [
 
 // Lesiones
 const injuries = [
-  { id: 'shoulder', name: 'Hombro', description: 'Limitación en movimientos de hombro' },
-  { id: 'elbow', name: 'Codo', description: 'Dolor o limitación en el codo' },
-  { id: 'wrist', name: 'Muñeca', description: 'Dolor o limitación en la muñeca' },
-  { id: 'back', name: 'Espalda', description: 'Problemas de espalda o columna' },
-  { id: 'knee', name: 'Rodilla', description: 'Dolor o limitación en las rodillas' },
-  { id: 'ankle', name: 'Tobillo', description: 'Dolor o limitación en los tobillos' }
+  { id: 'shoulder' as const, name: 'Hombro', description: 'Limitación en movimientos de hombro' },
+  { id: 'elbow' as const, name: 'Codo', description: 'Dolor o limitación en el codo' },
+  { id: 'wrist' as const, name: 'Muñeca', description: 'Dolor o limitación en la muñeca' },
+  { id: 'back' as const, name: 'Espalda', description: 'Problemas de espalda o columna' },
+  { id: 'knee' as const, name: 'Rodilla', description: 'Dolor o limitación en las rodillas' },
+  { id: 'ankle' as const, name: 'Tobillo', description: 'Dolor o limitación en los tobillos' }
 ]
+
+// Función helper para acceder a las injuries de forma type-safe
+function getInjuryValue(injuryId: string): boolean {
+  return profile.value.injuries[injuryId as keyof typeof profile.value.injuries] || false
+}
+
+function setInjuryValue(injuryId: string, value: boolean): void {
+  ;(profile.value.injuries as any)[injuryId] = value
+}
 
 onMounted(() => {
   // Cargar perfil existente si existe
@@ -264,7 +273,7 @@ function validateForm() {
               :key="level.id"
               class="p-3 border rounded-lg cursor-pointer transition-all duration-200"
               :class="profile.level === level.id ? 'border-primary-500 bg-primary-50 dark:bg-primary-900' : 'border-gray-200 dark:border-gray-700'"
-              @click="profile.level = level.id"
+              @click="profile.level = level.id as 'beginner' | 'intermediate' | 'advanced'"
             >
               <div class="flex items-start">
                 <div class="flex-shrink-0 mt-0.5">
@@ -295,7 +304,7 @@ function validateForm() {
               :key="goal.id"
               class="p-3 border rounded-lg cursor-pointer transition-all duration-200"
               :class="profile.goal === goal.id ? 'border-primary-500 bg-primary-50 dark:bg-primary-900' : 'border-gray-200 dark:border-gray-700'"
-              @click="profile.goal = goal.id"
+              @click="profile.goal = goal.id as 'hypertrophy' | 'strength' | 'endurance' | 'weightloss' | 'toning'"
             >
               <div class="flex items-start">
                 <div class="flex-shrink-0 mt-0.5">
@@ -328,14 +337,15 @@ function validateForm() {
               v-for="injury in injuries" 
               :key="injury.id"
               class="p-3 border rounded-lg"
-              :class="profile.injuries[injury.id as keyof typeof profile.injuries] ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/30' : 'border-gray-200 dark:border-gray-700'"
+              :class="getInjuryValue(injury.id) ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/30' : 'border-gray-200 dark:border-gray-700'"
             >
               <div class="flex items-start">
                 <div class="flex-shrink-0 mt-0.5">
                   <input 
                     type="checkbox" 
                     :id="injury.id" 
-                    v-model="profile.injuries[injury.id as keyof typeof profile.injuries]"
+                    :checked="getInjuryValue(injury.id)"
+                    @change="setInjuryValue(injury.id, ($event.target as HTMLInputElement).checked)"
                     class="form-checkbox text-orange-500"
                   />
                 </div>

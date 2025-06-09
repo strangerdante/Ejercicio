@@ -89,7 +89,7 @@ function toggleExerciseCompleted(exercise: any) {
 
 // Traducir nombre de músculo
 function translateMuscle(muscle: string) {
-  const translations = {
+  const translations: Record<string, string> = {
     'chest': 'Pecho',
     'back': 'Espalda',
     'shoulders': 'Hombros',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useExerciseStore } from '../stores/exercises'
+import { useExerciseStore, Exercise } from '../stores/exercises'
 import { useUserStore } from '../stores/user'
 import ExerciseCard from '../components/ExerciseCard.vue'
 
@@ -56,9 +56,9 @@ const filteredExercises = computed(() => {
 })
 
 // Ejercicio detallado
-const selectedExercise = ref(null)
+const selectedExercise = ref<Exercise | null>(null)
 
-function showExerciseDetail(exercise) {
+function showExerciseDetail(exercise: Exercise) {
   selectedExercise.value = exercise
 }
 

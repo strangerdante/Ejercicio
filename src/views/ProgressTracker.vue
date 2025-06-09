@@ -40,7 +40,7 @@ const progressChartData = computed(() => {
   }).reverse()
 
   // Calcular el progreso diario
-  const progressData = last7Days.map(date => {
+  const progressData = last7Days.map(() => {
     const dayProgress = routine.days.map(day => {
       const exercisesCompleted = day.exercises.filter(ex => ex.completed).length
       return (exercisesCompleted / day.exercises.length) * 100

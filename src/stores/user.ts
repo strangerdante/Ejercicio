@@ -146,7 +146,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function calculateStartingWeight(exercise: any) {
+  function calculateStartingWeight(exercise: { difficulty: string; primaryMuscle: string }) {
     // Base weight calculated from user's body weight
     const bodyWeight = profile.value.weightUnit === 'kg' 
       ? profile.value.weight 
@@ -156,24 +156,26 @@ export const useUserStore = defineStore('user', () => {
     const baseMultiplier = profile.value.gender === 'male' ? 0.15 : 0.10
     
     // Level multiplier
-    const levelMultiplier = {
+    const levelMultiplier: Record<string, number> = {
       'beginner': 0.7,
       'intermediate': 0.85,
       'advanced': 1.0
-    }[profile.value.level] || 0.7
+    }
+    const levelValue = levelMultiplier[profile.value.level] || 0.7
     
     // Exercise difficulty multiplier
-    const difficultyMultiplier = {
+    const difficultyMultiplier: Record<string, number> = {
       'beginner': 0.9,
       'intermediate': 1.0,
       'advanced': 1.2
-    }[exercise.difficulty] || 1.0
+    }
+    const difficultyValue = difficultyMultiplier[exercise.difficulty] || 1.0
     
     // Muscle group multiplier
     const muscleGroupMultiplier = exercise.primaryMuscle === 'legs' ? 1.5 : 1.0
     
     // Calculate raw weight
-    let weight = bodyWeight * baseMultiplier * levelMultiplier * difficultyMultiplier * muscleGroupMultiplier
+    let weight = bodyWeight * baseMultiplier * levelValue * difficultyValue * muscleGroupMultiplier
     
     // Round to nearest 2.5
     weight = Math.round(weight / 2.5) * 2.5

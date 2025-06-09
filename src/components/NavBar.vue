@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '../stores/user'
 
 defineProps<{
   isDarkMode: boolean
@@ -10,7 +9,6 @@ defineProps<{
 const emit = defineEmits(['toggle-dark-mode'])
 const mobileMenuOpen = ref(false)
 const router = useRouter()
-const userStore = useUserStore()
 
 const routes = [
   { name: 'Home', path: '/', label: 'Inicio' },

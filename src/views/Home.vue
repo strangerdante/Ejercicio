@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../stores/user'
 import { useRoutineStore } from '../stores/routines'
@@ -41,12 +41,7 @@ function deleteRoutine(event: Event, routineId: string) {
   }
 }
 
-// Calcular progreso del día
-function calculateDayProgress(day: any) {
-  if (!day.exercises || day.exercises.length === 0) return 0
-  const completedExercises = day.exercises.filter((ex: any) => ex.completed).length
-  return Math.round((completedExercises / day.exercises.length) * 100)
-}
+
 </script>
 
 <template>
@@ -170,7 +165,7 @@ function calculateDayProgress(day: any) {
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         
-        <div v-for="(exercise, index) in exerciseStore.exercises.slice(0, 3)" :key="exercise.id" 
+        <div v-for="exercise in exerciseStore.exercises.slice(0, 3)" :key="exercise.id" 
              class="card p-4 cursor-pointer hover:shadow-lg transition-all duration-300"
              @click="goToExercises">
           <div class="mb-2 h-40 overflow-hidden rounded-lg">

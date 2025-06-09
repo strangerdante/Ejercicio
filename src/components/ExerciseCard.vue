@@ -8,7 +8,7 @@ const props = defineProps<{
 
 // Calcular estrellas de dificultad
 const difficultyStars = computed(() => {
-  const difficultyMap = {
+  const difficultyMap: Record<string, number> = {
     'beginner': 1,
     'intermediate': 2,
     'advanced': 3
@@ -18,7 +18,7 @@ const difficultyStars = computed(() => {
 
 // Traducir nombre de músculo
 const translateMuscle = (muscle: string) => {
-  const translations = {
+  const translations: Record<string, string> = {
     'chest': 'Pecho',
     'back': 'Espalda',
     'shoulders': 'Hombros',
@@ -35,7 +35,7 @@ const translateMuscle = (muscle: string) => {
 
 // Traducir dificultad
 const translateDifficulty = computed(() => {
-  const translations = {
+  const translations: Record<string, string> = {
     'beginner': 'Principiante',
     'intermediate': 'Intermedio',
     'advanced': 'Avanzado'
